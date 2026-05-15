@@ -1,0 +1,17 @@
+# Local runtime state
+cache/
+portable-data/
+
+# Release artifacts
+dist/
+*.zip
+*.7z
+*.msi
+
+# Bundled binaries are published as GitHub Release assets, not committed.
+MdPaste.exe
+_internal/
+
+# Windows noise
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,25 @@
+# MDPASTE Portable v0.1.6.8
+
+## Assets
+
+- `MDPASTE-portable-v0.1.6.8.zip`: portable package. Extract and run `MDPASTE.cmd`.
+- `PasteMD_pandoc-Setup_v0.1.6.8.exe`: upstream installer package.
+
+## User Notes
+
+- First run: extract the ZIP, then double-click `MDPASTE.cmd`.
+- Do not run `MdPaste.exe` directly.
+- The portable launcher rewrites `pandoc_path` and `save_dir` for the current computer on every start.
+- Bundled Pandoc is required and included under `_internal\pandoc\pandoc.exe`.
+- Local user config/log/cache files are not included in the clean release package.
+- If startup on login is enabled and the folder is moved, run `switch-startup.cmd` again.
+
+## Purpose
+
+MDPASTE converts copied Markdown, including AI chat answers, into formatted paste output for Word/WPS/Office and other supported applications.
+
+## License and Source
+
+- Upstream project: <https://github.com/RICHQAQ/PasteMD>
+- Corresponding source: <https://github.com/RICHQAQ/PasteMD/tree/v0.1.6.8>
+- License: AGPL-3.0. The release keeps `LICENSE`, `NOTICE.md`, and `SOURCE.md`.
