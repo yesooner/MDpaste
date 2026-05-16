@@ -100,9 +100,24 @@ dist\MDPASTE-portable-v0.1.0.0.zip
 
 ## 相对上游的修改
 
-本仓库已提交从本地发行包中识别出的上游资源修改，包括 `pastemd/i18n/locales` 下的语言文件和 `assets/icons` 下的图标文件。
+代码和资源修改说明主要看这两个文件：
 
-本仓库还新增了便携封装相关内容，包括 `MDPASTE.cmd`、`MdPaste-portable.cmd`、`portable-config.ps1`、`switch-startup.cmd`、`build-release.ps1` 以及说明和许可文件。详细修改清单见 `MODIFICATIONS.md`，上游对比清单见 `UPSTREAM_COMPARISON.md`。
+- `MODIFICATIONS.md`：逐项说明本仓库相对上游新增或修改了哪些文件，以及每个脚本/资源文件的作用。
+- `UPSTREAM_COMPARISON.md`：列出与上游 PasteMD `v0.1.6.8` 对比后确认发生变化的文件。
+
+本仓库已提交从本地发行包中识别出的上游资源修改：
+
+- `pastemd/i18n/locales` 下的语言文件。
+- `assets/icons` 下的图标文件。
+
+本仓库还新增了便携封装相关内容：
+
+- `MDPASTE.cmd`
+- `MdPaste-portable.cmd`
+- `portable-config.ps1`
+- `switch-startup.cmd`
+- `build-release.ps1`
+- 说明文档、许可文件和源码对比文件。
 
 如果发布的 `MdPaste.exe` 中还包含 Python 逻辑修改，则需要继续补充用于构建该二进制的对应修改源码。
 
