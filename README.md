@@ -94,15 +94,17 @@ dist\MDPASTE-portable-v0.1.0.0.zip
 
 ## Codex 声明
 
-本仓库中的便携启动脚本、路径配置脚本、打包脚本、README、Release notes、NOTICE 和 SOURCE 说明由 OpenAI Codex 在与项目维护者的对话过程中辅助撰写和整理。
+本仓库中的便携启动脚本、路径配置脚本、打包脚本、README、Release notes、NOTICE、SOURCE 和 MODIFICATIONS 说明由 OpenAI Codex 在与项目维护者的对话过程中辅助撰写和整理。
 
-上游 PasteMD 程序本体不属于 Codex 创作内容。本仓库未修改上游 `MdPaste.exe` 二进制文件。
+上游 PasteMD 程序本体不属于 Codex 创作内容。
 
 ## 相对上游的修改
 
-本仓库没有修改上游 `MdPaste.exe` 二进制文件，也没有在仓库中提交上游源码补丁。
+本仓库已提交从本地发行包中识别出的上游资源修改，包括 `pastemd/i18n/locales` 下的语言文件和 `assets/icons` 下的图标文件。
 
-本仓库新增的是便携封装相关内容，包括 `MDPASTE.cmd`、`MdPaste-portable.cmd`、`portable-config.ps1`、`switch-startup.cmd`、`build-release.ps1` 以及说明和许可文件。详细修改清单见 `MODIFICATIONS.md`。
+本仓库还新增了便携封装相关内容，包括 `MDPASTE.cmd`、`MdPaste-portable.cmd`、`portable-config.ps1`、`switch-startup.cmd`、`build-release.ps1` 以及说明和许可文件。详细修改清单见 `MODIFICATIONS.md`，上游对比清单见 `UPSTREAM_COMPARISON.md`。
+
+如果发布的 `MdPaste.exe` 中还包含 Python 逻辑修改，则需要继续补充用于构建该二进制的对应修改源码。
 
 ## 上游项目和许可
 

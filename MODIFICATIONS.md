@@ -2,13 +2,57 @@
 
 This repository redistributes upstream PasteMD `v0.1.6.8` as MDPASTE Portable `v0.1.0.0`.
 
-The upstream application binary is not modified:
+The release package includes the upstream application binary:
 
 - `MdPaste.exe` is redistributed as part of the portable release package.
 - The bundled runtime under `_internal\` is redistributed as part of the portable release package.
-- No upstream PasteMD source file is patched in this repository.
 
-The changes made in this repository are packaging, launcher, configuration, and documentation changes for portable Windows use.
+The changes published in this repository include both portable packaging changes and modified upstream resource files that were visible in the packaged runtime.
+
+Important compliance note: if the distributed `MdPaste.exe` contains Python logic changes beyond the resource files listed below, the corresponding modified Python source used to build that executable must also be added to this repository. The current local package does not contain `.py` or `.pyc` files outside the PyInstaller executable, so only visible modified resources can be extracted and committed here.
+
+## Modified Upstream Resource Files
+
+These files are committed using the same relative paths as the upstream PasteMD project:
+
+### `pastemd\i18n\locales\en-US.json`
+
+Modified from upstream `v0.1.6.8`.
+
+### `pastemd\i18n\locales\ja-JP.json`
+
+Modified from upstream `v0.1.6.8`.
+
+### `pastemd\i18n\locales\zh-CN.json`
+
+Modified from upstream `v0.1.6.8`.
+
+### `assets\icons\logo.ico`
+
+Modified from upstream `v0.1.6.8`.
+
+### `assets\icons\logo.png`
+
+Modified from upstream `v0.1.6.8`.
+
+### `assets\icons\logo_white.png`
+
+Modified from upstream `v0.1.6.8`.
+
+### `assets\icons\logoTemplate.png`
+
+Modified from upstream `v0.1.6.8`.
+
+### `assets\icons\logo_toast.png`
+
+New icon file present in the distributed runtime package. This file is not present in upstream `v0.1.6.8`.
+
+## Unchanged Visible Upstream Resource Files
+
+These visible files were compared and matched upstream `v0.1.6.8`:
+
+- `pastemd\lua\keep-latex-math.lua`
+- `pastemd\lua\latex-replacements.lua`
 
 ## Added Files
 
@@ -102,7 +146,9 @@ They document:
 - files changed by this portable packaging repository
 - Codex-assisted authorship of the portable scripts and documentation
 
-## Files Not Committed to Git
+The upstream comparison table is kept in `UPSTREAM_COMPARISON.md`.
+
+## Runtime Files Not Committed to Git
 
 The following files are intentionally not committed to the Git repository:
 

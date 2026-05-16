@@ -18,6 +18,8 @@ New-Item -ItemType Directory -Force -Path $staging, $dist | Out-Null
 $include = @(
   "MdPaste.exe",
   "_internal",
+  "assets",
+  "pastemd",
   "MDPASTE.cmd",
   "MdPaste-portable.cmd",
   "portable-config.ps1",
@@ -26,6 +28,7 @@ $include = @(
   "README.txt",
   "RELEASE_NOTES.md",
   "MODIFICATIONS.md",
+  "UPSTREAM_COMPARISON.md",
   "SOURCE.md",
   "LICENSE",
   "NOTICE.md"
