@@ -26,7 +26,7 @@ MDPASTE Portable 是基于上游 PasteMD 制作的 Windows 便携版封装，用
 - `portable-data`：本机配置和日志目录，首次运行后自动创建。
 - `cache`：转换缓存目录，首次运行后自动创建。
 
-## 路径是否适配新电脑
+## 路径安装
 
 可以。每次从 `MDPASTE.cmd` 启动时，程序都会按当前文件夹重写配置：
 
@@ -37,7 +37,7 @@ MDPASTE Portable 是基于上游 PasteMD 制作的 Windows 便携版封装，用
 
 所以把整个文件夹复制到另一台 Windows 电脑后，仍然双击 `MDPASTE.cmd` 即可，不需要手动修改路径。
 
-## 是否必须使用 Pandoc
+## Pandoc使用
 
 需要。PasteMD 的文档/富文本转换依赖 Pandoc，本便携包已经把 Pandoc 放在：
 
