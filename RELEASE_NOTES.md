@@ -3,7 +3,6 @@
 ## Assets
 
 - `MDPASTE-portable-v0.1.6.8.zip`: portable package. Extract and run `MDPASTE.cmd`.
-- `PasteMD_pandoc-Setup_v0.1.6.8.exe`: upstream installer package.
 
 ## User Notes
 
@@ -17,6 +16,10 @@
 ## Purpose
 
 MDPASTE converts copied Markdown, including AI chat answers, into formatted paste output for Word/WPS/Office and other supported applications.
+
+## Source Compliance
+
+This release does not modify the upstream `MdPaste.exe` binary. The repository publishes the portable launcher, configuration, packaging scripts, and documentation changes made for this redistribution. Upstream corresponding source is linked below.
 
 ## License and Source
 

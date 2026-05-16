@@ -45,7 +45,6 @@ Open the repository on GitHub and create a new Release:
 Upload these files as release assets:
 
 - `dist\MDPASTE-portable-v0.1.6.8.zip`
-- `..\PasteMD_pandoc-Setup_v0.1.6.8.exe`
 
 Do not commit `_internal`, `MdPaste.exe`, `portable-data`, `cache`, or `dist` into the Git repository. They are ignored intentionally.
 
