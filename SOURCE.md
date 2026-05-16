@@ -13,9 +13,12 @@ Upstream corresponding source:
 
 Packaging source in this repository:
 
+- `MDPASTE.cmd`
 - `MdPaste-portable.cmd`
 - `portable-config.ps1`
 - `switch-startup.cmd`
 - `build-release.ps1`
+
+Detailed modifications from upstream are listed in `MODIFICATIONS.md`.
 
 The release ZIP includes bundled third-party runtime files. Their license files are kept in place where provided by the upstream package, including Pandoc files under `_internal\pandoc\`.

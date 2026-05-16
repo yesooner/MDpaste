@@ -25,6 +25,7 @@ $include = @(
   "README.md",
   "README.txt",
   "RELEASE_NOTES.md",
+  "MODIFICATIONS.md",
   "SOURCE.md",
   "LICENSE",
   "NOTICE.md"

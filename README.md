@@ -98,6 +98,12 @@ dist\MDPASTE-portable-v0.1.0.0.zip
 
 上游 PasteMD 程序本体不属于 Codex 创作内容。本仓库未修改上游 `MdPaste.exe` 二进制文件。
 
+## 相对上游的修改
+
+本仓库没有修改上游 `MdPaste.exe` 二进制文件，也没有在仓库中提交上游源码补丁。
+
+本仓库新增的是便携封装相关内容，包括 `MDPASTE.cmd`、`MdPaste-portable.cmd`、`portable-config.ps1`、`switch-startup.cmd`、`build-release.ps1` 以及说明和许可文件。详细修改清单见 `MODIFICATIONS.md`。
+
 ## 上游项目和许可
 
 上游项目：<https://github.com/RICHQAQ/PasteMD>

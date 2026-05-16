@@ -21,6 +21,8 @@ MDPASTE converts copied Markdown, including AI chat answers, into formatted past
 
 This release does not modify the upstream `MdPaste.exe` binary. The repository publishes the portable launcher, configuration, packaging scripts, and documentation changes made for this redistribution. Upstream corresponding source is linked below.
 
+Detailed changes from upstream are documented in `MODIFICATIONS.md`.
+
 ## License and Source
 
 - Upstream project: <https://github.com/RICHQAQ/PasteMD>
