@@ -1,6 +1,6 @@
 # Corresponding Source
 
-This portable package redistributes PasteMD `v0.1.6.8`.
+MDPASTE Portable release `v0.1.0.0` redistributes upstream PasteMD `v0.1.6.8`.
 
 This redistribution does not modify the upstream `MdPaste.exe` binary. The source published in this repository covers the portable launcher, configuration rewrite script, startup helper, packaging script, and documentation changes added for the portable release.
 

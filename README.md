@@ -8,7 +8,7 @@ MDPASTE Portable 是基于上游 PasteMD 制作的 Windows 便携版封装，用
 
 ## 首次使用
 
-1. 在 GitHub Releases 页面下载 `MDPASTE-portable-v0.1.6.8.zip`。
+1. 在 GitHub Releases 页面下载 `MDPASTE-portable-v0.1.0.0.zip`。
 2. 解压到任意文件夹。
 3. 双击 `MDPASTE.cmd` 启动。
 4. 复制 Markdown 内容。
@@ -26,9 +26,9 @@ MDPASTE Portable 是基于上游 PasteMD 制作的 Windows 便携版封装，用
 - `portable-data`：本机配置和日志目录，首次运行后自动创建。
 - `cache`：转换缓存目录，首次运行后自动创建。
 
-## 路径安装
+## 路径和移植
 
-可以。每次从 `MDPASTE.cmd` 启动时，程序都会按当前文件夹重写配置：
+可以直接移植到新电脑。每次从 `MDPASTE.cmd` 启动时，程序都会按当前文件夹重写配置：
 
 - `APPDATA` -> `portable-data\Roaming`
 - `LOCALAPPDATA` -> `portable-data\Local`
@@ -37,9 +37,9 @@ MDPASTE Portable 是基于上游 PasteMD 制作的 Windows 便携版封装，用
 
 所以把整个文件夹复制到另一台 Windows 电脑后，仍然双击 `MDPASTE.cmd` 即可，不需要手动修改路径。
 
-## Pandoc使用
+## Pandoc 使用
 
-需要。PasteMD 的文档/富文本转换依赖 Pandoc，本便携包已经把 Pandoc 放在：
+PasteMD 的文档/富文本转换依赖 Pandoc。本便携包已经把 Pandoc 放在：
 
 ```text
 _internal\pandoc\pandoc.exe
@@ -63,6 +63,19 @@ _internal\pandoc\pandoc.exe
 
 这些是本机运行数据，不提交到 Git，也不会打入干净的发布 ZIP。
 
+## 版本维护
+
+如果发行版本发生变化，需要同步修改以下位置：
+
+- `README.md` 和 `README.txt` 中的下载文件名。
+- `RELEASE_NOTES.md` 中的版本号和附件名。
+- `SOURCE.md` 中对应的上游 tag、commit 和源码链接。
+- `build-release.ps1` 中的默认 `$Version`。
+- Git tag，例如 `v0.1.0.0`。
+- GitHub Release 标题、说明和附件 ZIP 名称。
+
+版本号不一致会导致用户下载说明、Release 附件和源码说明互相对不上，所以每次发布新版本都应统一检查。
+
 ## 仓库和发布方式
 
 Git 仓库只保存启动脚本、打包脚本、说明文档、许可证和源码说明。完整可运行包通过 GitHub Release 附件发布。
@@ -76,13 +89,19 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\build-release.ps1
 输出文件：
 
 ```text
-dist\MDPASTE-portable-v0.1.6.8.zip
+dist\MDPASTE-portable-v0.1.0.0.zip
 ```
+
+## Codex 声明
+
+本仓库中的便携启动脚本、路径配置脚本、打包脚本、README、Release notes、NOTICE 和 SOURCE 说明由 OpenAI Codex 在与项目维护者的对话过程中辅助撰写和整理。
+
+上游 PasteMD 程序本体不属于 Codex 创作内容。本仓库未修改上游 `MdPaste.exe` 二进制文件。
 
 ## 上游项目和许可
 
 上游项目：<https://github.com/RICHQAQ/PasteMD>
 
-本便携包对应上游 PasteMD `v0.1.6.8`：<https://github.com/RICHQAQ/PasteMD/tree/v0.1.6.8>
+本便携封装发行版本为 `v0.1.0.0`。它重新分发的上游 PasteMD 对应版本为 `v0.1.6.8`：<https://github.com/RICHQAQ/PasteMD/tree/v0.1.6.8>
 
 PasteMD 采用 AGPL-3.0 许可。本仓库是对 PasteMD Windows 便携包的再分发/封装，仓库内启动脚本和打包文件也按 AGPL-3.0 发布。发布时请保留 `LICENSE`、`NOTICE.md` 和 `SOURCE.md`。

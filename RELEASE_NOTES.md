@@ -1,8 +1,8 @@
-# MDPASTE Portable v0.1.6.8
+# MDPASTE Portable v0.1.0.0
 
 ## Assets
 
-- `MDPASTE-portable-v0.1.6.8.zip`: portable package. Extract and run `MDPASTE.cmd`.
+- `MDPASTE-portable-v0.1.0.0.zip`: portable package. Extract and run `MDPASTE.cmd`.
 
 ## User Notes
 
@@ -24,5 +24,6 @@ This release does not modify the upstream `MdPaste.exe` binary. The repository p
 ## License and Source
 
 - Upstream project: <https://github.com/RICHQAQ/PasteMD>
-- Corresponding source: <https://github.com/RICHQAQ/PasteMD/tree/v0.1.6.8>
+- Portable release version: `v0.1.0.0`
+- Upstream corresponding source: <https://github.com/RICHQAQ/PasteMD/tree/v0.1.6.8>
 - License: AGPL-3.0. The release keeps `LICENSE`, `NOTICE.md`, and `SOURCE.md`.
