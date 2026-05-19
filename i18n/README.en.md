@@ -9,7 +9,7 @@
   English
 </p>
 
-## What It Is
+## What It Is MDPASTE
 
 MDPASTE Portable is a Windows portable distribution of PasteMD. It converts copied Markdown into formatted content that can be pasted into Word, WPS, Office, and other supported applications.
 
