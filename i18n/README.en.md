@@ -4,7 +4,7 @@
 > A Windows portable package based on upstream PasteMD, bundled with Pandoc and ready to run after extraction.
 
 <p align="center">
-  <strong>Other Languages / 其他语言:</strong><br>
+  <strong> Languages / 语言:</strong><br>
   <a href="../README.md">中文</a> |
   English
 </p>
