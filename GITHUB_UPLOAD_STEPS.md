@@ -38,13 +38,13 @@ git push -u origin main
 
 Open the repository on GitHub and create a new Release:
 
-- Tag: `v0.1.0.0`
-- Title: `MDPASTE Portable v0.1.0.0`
+- Tag: `v0.1.1`
+- Title: `MDPASTE Portable v0.1.1`
 - Description: copy the content from `RELEASE_NOTES.md`
 
 Upload these files as release assets:
 
-- `dist\MDPASTE-portable-v0.1.0.0.zip`
+- `dist\MDPASTE-portable-v0.1.1.zip`
 
 Do not commit `_internal`, `MdPaste.exe`, `portable-data`, `cache`, or `dist` into the Git repository. They are ignored intentionally.
 
@@ -52,7 +52,7 @@ Do not commit `_internal`, `MdPaste.exe`, `portable-data`, `cache`, or `dist` in
 
 After the Release is published:
 
-1. Download `MDPASTE-portable-v0.1.0.0.zip` from the Release page on another Windows computer.
+1. Download `MDPASTE-portable-v0.1.1.zip` from the Release page on another Windows computer.
 2. Extract it.
 3. Double-click `MDPASTE.cmd`.
 4. Confirm that `portable-data\Roaming\PasteMD\config.json` is created and points to the extracted folder.

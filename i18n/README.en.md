@@ -121,7 +121,7 @@ When the release version changes, update these places together:
 - Version and asset name in `RELEASE_NOTES.md`.
 - Upstream tag, commit, and source link in `SOURCE.md`.
 - Default `$Version` in `build-release.ps1`.
-- Git tag, for example `v0.1.0.0`.
+- Git tag, for example `v0.1.1`.
 - GitHub Release title, notes, and ZIP asset name.
 
 Keeping these values aligned avoids mismatches between user instructions, release assets, and source notes.

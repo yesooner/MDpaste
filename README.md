@@ -121,7 +121,7 @@ _internal\pandoc\pandoc.exe
 - `RELEASE_NOTES.md` 中的版本号和附件名。
 - `SOURCE.md` 中对应的上游 tag、commit 和源码链接。
 - `build-release.ps1` 中的默认 `$Version`。
-- Git tag，例如 `v0.1.0.0`。
+- Git tag，例如 `v0.1.1`。
 - GitHub Release 标题、说明和附件 ZIP 名称。
 
 版本号不一致会导致用户下载说明、Release 附件和源码说明互相对不上，所以每次发布新版本都应统一检查。
