@@ -1,5 +1,5 @@
 param(
-  [string]$Version = "0.1.1"
+  [string]$Version = "0.1.2"
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,6 +23,9 @@ $include = @(
   "MDPASTE.cmd",
   "MdPaste-portable.cmd",
   "portable-config.ps1",
+  "build-release.ps1",
+  "build-installer.ps1",
+  "installer.iss",
   "switch-startup.cmd",
   "README.md",
   "i18n",

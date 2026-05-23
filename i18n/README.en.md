@@ -24,7 +24,7 @@ Pandoc is bundled in this package, so users do not need to install Python, Pando
 ## Quick Start
 
 1. Open the GitHub Releases page.
-2. Download `MDPASTE-portable-v0.1.1.zip`.
+2. Download `MDPASTE-portable-v0.1.2.zip`.
 3. Extract it to any folder.
 4. Double-click `MDPASTE.cmd`.
 5. Copy Markdown content, then press the default hotkey `Ctrl+Alt+B` to convert/paste.
@@ -107,9 +107,9 @@ This repository also adds portable packaging files:
 
 If the distributed `MdPaste.exe` contains Python logic changes, the corresponding modified Python source used to build that binary must also be added.
 
-## v0.1.1 Notes
+## v0.1.2 Notes
 
-`v0.1.1` is a compatibility bugfix release. Recommended versioning follows SemVer-style rules: increment patch for fixes, for example `0.1.1`; increment minor for new features, for example `0.2.0`; use `1.0.0` after a stable public interface is established.
+`v0.1.2` is a compatibility bugfix release. Recommended versioning follows SemVer-style rules: increment patch for fixes, for example `0.1.1`; increment minor for new features, for example `0.2.0`; use `1.0.0` after a stable public interface is established.
 
 This release fixes ChatGPT web fragment copy handling where code blocks could be treated as plain text and lose Markdown fences. Code blocks and inline code are also protected from LaTeX/formula rewrites, while normal body formula conversion remains enabled.
 
@@ -121,7 +121,7 @@ When the release version changes, update these places together:
 - Version and asset name in `RELEASE_NOTES.md`.
 - Upstream tag, commit, and source link in `SOURCE.md`.
 - Default `$Version` in `build-release.ps1`.
-- Git tag, for example `v0.1.1`.
+- Git tag, for example `v0.1.2`.
 - GitHub Release title, notes, and ZIP asset name.
 
 Keeping these values aligned avoids mismatches between user instructions, release assets, and source notes.
@@ -137,7 +137,20 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\build-release.ps1
 Output:
 
 ```text
-dist\MDPASTE-portable-v0.1.1.zip
+dist\MDPASTE-portable-v0.1.2.zip
+```
+
+Build the Windows installer after installing Inno Setup:
+
+```powershell
+winget install JRSoftware.InnoSetup
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build-installer.ps1
+```
+
+Output:
+
+```text
+dist\MDPASTE-Setup-v0.1.2.exe
 ```
 
 The complete runnable package is distributed as a GitHub Release asset. The Git repository stores launcher scripts, packaging scripts, documentation, licenses, source notes, and identified modified resources.
@@ -152,6 +165,6 @@ The upstream PasteMD application itself is not authored by Codex.
 
 Upstream project: <https://github.com/RICHQAQ/PasteMD>
 
-This portable package release is `v0.1.1`. It redistributes upstream PasteMD `v0.1.6.8`: <https://github.com/RICHQAQ/PasteMD/tree/v0.1.6.8>
+This portable package release is `v0.1.2`. It redistributes upstream PasteMD `v0.1.6.8`: <https://github.com/RICHQAQ/PasteMD/tree/v0.1.6.8>
 
 PasteMD is licensed under AGPL-3.0. This repository redistributes and packages PasteMD for Windows portable use. The launcher and packaging files in this repository are also provided under AGPL-3.0. Keep `LICENSE`, `NOTICE.md`, and `SOURCE.md` with the release.

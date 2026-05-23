@@ -1,6 +1,6 @@
 # Modifications from Upstream PasteMD
 
-This repository redistributes upstream PasteMD `v0.1.6.8` as MDPASTE Portable `v0.1.1`.
+This repository redistributes upstream PasteMD `v0.1.6.8` as MDPASTE Portable `v0.1.2`.
 
 The release package includes the upstream application binary:
 
@@ -9,7 +9,7 @@ The release package includes the upstream application binary:
 
 The changes published in this repository include both portable packaging changes and modified upstream resource files that were visible in the packaged runtime.
 
-`v0.1.1` includes a PyInstaller archive patch applied to `MdPaste.exe`. The corresponding patch script is committed as `tools/patch_release_exe.py`.
+`v0.1.2` includes a PyInstaller archive patch applied to `MdPaste.exe`. The corresponding patch script is committed as `tools/patch_release_exe.py`.
 
 ## Modified Upstream Resource Files
 
@@ -113,13 +113,25 @@ If the folder is moved, users should run this script again to refresh the schedu
 
 Release packaging script.
 
-It creates `dist\MDPASTE-portable-v0.1.1.zip` from:
+It creates `dist\MDPASTE-portable-v0.1.2.zip` from:
 
 - upstream binary/runtime files: `MdPaste.exe`, `_internal`
 - portable launcher/config scripts
 - documentation and license/source notice files
 
 It intentionally does not include local runtime state such as `portable-data` config/log files.
+
+### `build-installer.ps1`
+
+Builds the optional Windows installer using Inno Setup.
+
+It checks required runtime inputs, locates `ISCC.exe`, and produces `dist\MDPASTE-Setup-v0.1.2.exe`.
+
+### `installer.iss`
+
+Inno Setup project file for the optional installer.
+
+It installs the bundled runtime, launcher scripts, documentation, and creates Start Menu shortcuts. Optional tasks create a desktop shortcut and a user startup shortcut.
 
 ### `tools\patch_release_exe.py`
 
