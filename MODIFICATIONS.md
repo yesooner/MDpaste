@@ -1,6 +1,6 @@
-# Modifications from Upstream PasteMD
+﻿# Modifications from Upstream PasteMD
 
-This repository redistributes upstream PasteMD `v0.1.6.8` as MDPASTE Portable `v0.1.2`.
+This repository redistributes upstream PasteMD `v0.1.6.8` as MDPASTE Portable `v0.1.8`.
 
 The release package includes the upstream application binary:
 
@@ -9,7 +9,7 @@ The release package includes the upstream application binary:
 
 The changes published in this repository include both portable packaging changes and modified upstream resource files that were visible in the packaged runtime.
 
-`v0.1.2` includes a PyInstaller archive patch applied to `MdPaste.exe`. The corresponding patch script is committed as `tools/patch_release_exe.py`.
+`v0.1.8` includes a PyInstaller archive patch applied to `MdPaste.exe`. The corresponding patch script is committed as `tools/patch_release_exe.py`.
 
 ## Modified Upstream Resource Files
 
@@ -56,11 +56,17 @@ These visible files were compared and matched upstream `v0.1.6.8`:
 
 ## Added Files
 
+### `MdPaste-portable-launcher.exe`
+
+User-facing no-console launcher. Users double-click this file instead of `MdPaste.exe` or `MDPASTE.cmd`.
+
+It performs the portable environment setup directly, exits when the same `MdPaste.exe` is already running, and starts the app without creating a command prompt window.
+
 ### `MDPASTE.cmd`
 
-User-facing launcher. Users double-click this file instead of `MdPaste.exe`.
+Compatibility fallback launcher.
 
-It delegates to `MdPaste-portable.cmd` so all portable environment setup happens before the upstream app starts.
+It delegates to `MdPaste-portable-launcher.exe` when that native launcher is present. If the native launcher is missing, it falls back to the script-based portable startup path.
 
 ### `MdPaste-portable.cmd`
 
@@ -76,7 +82,7 @@ It performs these changes compared with directly launching upstream `MdPaste.exe
 - Creates missing `portable-data` and `cache` folders.
 - Checks that `MdPaste.exe` exists.
 - Checks that bundled Pandoc exists at `_internal\pandoc\pandoc.exe`.
-- Runs `portable-config.ps1` before launching the upstream app.
+- Runs `portable-config.ps1` before launching the upstream app when the native launcher is not available.
 
 ### `portable-config.ps1`
 
@@ -105,7 +111,7 @@ This makes the package portable after it is moved to a different Windows compute
 
 Windows login startup helper.
 
-It creates or removes a Windows scheduled task named `PasteMD-Portable`, pointing to the current folder's `MdPaste-portable.cmd`.
+It creates or removes a Windows scheduled task named `PasteMD-Portable`, pointing to the current folder's `MdPaste-portable-launcher.exe`.
 
 If the folder is moved, users should run this script again to refresh the scheduled task path.
 
@@ -113,9 +119,10 @@ If the folder is moved, users should run this script again to refresh the schedu
 
 Release packaging script.
 
-It creates `dist\MDPASTE-portable-v0.1.2.zip` from:
+It creates `dist\MDPASTE-portable-v0.1.8.zip` from:
 
 - upstream binary/runtime files: `MdPaste.exe`, `_internal`
+- native launcher: `MdPaste-portable-launcher.exe`
 - portable launcher/config scripts
 - documentation and license/source notice files
 
@@ -125,7 +132,7 @@ It intentionally does not include local runtime state such as `portable-data` co
 
 Builds the optional Windows installer using Inno Setup.
 
-It checks required runtime inputs, locates `ISCC.exe`, and produces `dist\MDPASTE-Setup-v0.1.2.exe`.
+It checks required runtime inputs, locates `ISCC.exe`, and produces `dist\MDPASTE-Setup-v0.1.8.exe`.
 
 ### `installer.iss`
 
@@ -156,6 +163,8 @@ These files were added or rewritten for redistribution:
 - `LICENSE`
 - `.gitignore`
 - `.gitattributes`
+- `tools/MdPastePortableLauncher.cs`
+- `tools/build_portable_launcher.ps1`
 
 They document:
 

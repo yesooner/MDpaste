@@ -1,4 +1,4 @@
-# Corresponding Source
+﻿# Corresponding Source
 
 MDPASTE Portable release `v0.1.1` redistributes upstream PasteMD `v0.1.6.8`.
 
@@ -17,12 +17,15 @@ Packaging source in this repository:
 
 - `assets/icons/*`
 - `pastemd/i18n/locales/*`
+- `MdPaste-portable-launcher.exe`
 - `MDPASTE.cmd`
 - `MdPaste-portable.cmd`
 - `portable-config.ps1`
 - `switch-startup.cmd`
 - `build-release.ps1`
 - `tools/patch_release_exe.py`
+- `tools/MdPastePortableLauncher.cs`
+- `tools/build_portable_launcher.ps1`
 
 Detailed modifications from upstream are listed in `MODIFICATIONS.md`. The comparison against upstream `v0.1.6.8` is summarized in `UPSTREAM_COMPARISON.md`.
 

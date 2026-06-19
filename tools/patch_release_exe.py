@@ -1,10 +1,13 @@
 import marshal
+import importlib.util
 import os
 import shutil
 import struct
+import subprocess
 import sys
 import tempfile
 import zlib
+from datetime import datetime
 from pathlib import Path
 
 
@@ -14,6 +17,8 @@ NEW_CODE_BLOCK_PATTERN = (
     r"|(?:[ \t]{4}|\t)[^\n]*(?:\n(?:[ \t]{4}|\t)[^\n]*)*)"
     r"|(`+)[^\n]*?\3"
 )
+APP_VERSION_OLD = "0.1.6.9rc1"
+APP_VERSION_NEW = "0.1.8"
 
 PATCHED_CONVERT_LATEX_SOURCE = r'''
 def convert_latex_delimiters(
@@ -122,10 +127,121 @@ def convert_latex_delimiters(
         segment = _normalize_inline_math_segments(segment)
         return _normalize_display_math_blocks(segment)
 
+    def normalize_fenced_code_region(part: str) -> str:
+        line_end = part.find("\n")
+        if line_end == -1:
+            line_end = len(part)
+        first_line = part[:line_end]
+        leading = len(first_line) - len(first_line.lstrip(" \t"))
+        if leading > 3:
+            return part
+
+        stripped = first_line[leading:]
+        if not (stripped.startswith("```") or stripped.startswith("~~~")):
+            return part
+
+        marker = stripped[0]
+        fence_len = 0
+        while fence_len < len(stripped) and stripped[fence_len] == marker:
+            fence_len += 1
+        if fence_len < 3:
+            return part
+
+        def clean_fence_info_line(line: str) -> str:
+            prefix = line[:leading] + marker * fence_len
+            info_text = line[leading + fence_len :].strip(" \t")
+            info_text = re.sub(
+                r"(?i)(?:^|\s)id\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s}]+)",
+                " ",
+                info_text,
+            )
+            info_text = re.sub(r"(?i)(?:^|\s)id(?=\s|$)", " ", info_text)
+            info_text = re.sub(r"(?:^|\s)#[^\s{}]+", " ", info_text)
+            language_from_attrs = None
+            non_language_classes = {".numberlines"}
+
+            def promote_top_level_language_class(match):
+                nonlocal language_from_attrs
+                attr = match.group(1)
+                if attr.lower() in non_language_classes:
+                    return match.group(0)
+                if language_from_attrs is None:
+                    language_from_attrs = attr[1:]
+                    return " "
+                return match.group(0)
+
+            info_text = re.sub(r"(?<!\S)(\.[A-Za-z][\w-]*)(?!\S)", promote_top_level_language_class, info_text)
+
+            def clean_attribute_list(match):
+                nonlocal language_from_attrs
+                attr_text = re.sub(
+                    r"(?i)(?:^|\s)id\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s}]+)",
+                    " ",
+                    match.group(1),
+                )
+                attrs = attr_text.split()
+                kept = []
+                for attr in attrs:
+                    attr_lower = attr.lower()
+                    if attr.startswith("#") or attr_lower == "id" or attr_lower.startswith("id="):
+                        continue
+                    if (
+                        language_from_attrs is None
+                        and attr.startswith(".")
+                        and attr_lower not in non_language_classes
+                    ):
+                        language_from_attrs = attr[1:]
+                        continue
+                    kept.append(attr)
+                return " {" + " ".join(kept) + "}" if kept else ""
+
+            info_text = re.sub(r"\{([^{}]*)\}", clean_attribute_list, info_text)
+            info_text = " ".join(info_text.split())
+            if language_from_attrs and not info_text:
+                info_text = language_from_attrs
+            elif language_from_attrs and info_text.startswith("{"):
+                info_text = language_from_attrs + " " + info_text
+            return prefix + info_text
+
+        lines = part.splitlines(True)
+        if lines:
+            newline = "\n" if lines[0].endswith("\n") else ""
+            lines[0] = clean_fence_info_line(lines[0].rstrip("\n")) + newline
+            first_line = lines[0].rstrip("\n")
+            stripped = first_line[leading:]
+        if len(lines) >= 3 and lines[1].strip() == "":
+            lines.pop(1)
+        if len(lines) >= 3 and lines[-2].strip() == "":
+            lines.pop(-2)
+        if lines:
+            part = "".join(lines)
+
+        info = stripped[fence_len:].strip(" \t").lower()
+        if info not in ("text", "txt", "plain", "plaintext", "文字"):
+            return part
+
+        lines = part.splitlines(True)
+        if len(lines) < 3:
+            return part
+
+        content = lines[1:-1]
+        nonblank = [line for line in content if line.strip()]
+        if not nonblank or not all(line.startswith(" ") for line in nonblank):
+            return part
+        if any(line.startswith("  ") or line.startswith("\t") for line in nonblank):
+            return part
+
+        normalized = [lines[0]]
+        for line in content:
+            normalized.append(line[1:] if line.startswith(" ") else line)
+        normalized.append(lines[-1])
+        return "".join(normalized)
+
     parts = []
     for is_code, part in split_code_regions(text):
-        parts.append(part if is_code else process_segment(part))
-    return "".join(parts)
+        parts.append(normalize_fenced_code_region(part) if is_code else process_segment(part))
+    result = "".join(parts)
+    return result.replace("\n```\n\n```\n", "\n```\n```\n").replace("\n~~~\n\n~~~\n", "\n~~~\n~~~\n")
 '''
 
 PATCHED_SHOULD_PREFER_CLIPBOARD_TEXT_SOURCE = r'''
@@ -227,6 +343,69 @@ def read_pyz(path):
     return data, py_magic, toc
 
 
+def ensure_runtime_magic_matches_pyz(py_magic, runtime_magic=None):
+    runtime_magic = importlib.util.MAGIC_NUMBER if runtime_magic is None else runtime_magic
+    if py_magic != runtime_magic:
+        raise RuntimeError(
+            "Python bytecode magic mismatch: "
+            f"PYZ uses {py_magic.hex()}, runtime uses {runtime_magic.hex()}. "
+            "Run this patch script with the same Python version used by MdPaste.exe."
+        )
+
+
+def get_running_mdpaste_paths():
+    if os.name != "nt":
+        return []
+    command = [
+        "powershell",
+        "-NoProfile",
+        "-Command",
+        (
+            "Get-CimInstance Win32_Process -Filter \"Name='MdPaste.exe'\" "
+            "| ForEach-Object { $_.ExecutablePath }"
+        ),
+    ]
+    try:
+        output = subprocess.check_output(command, text=True, stderr=subprocess.DEVNULL)
+    except Exception as exc:
+        raise RuntimeError(f"Could not check running MdPaste.exe processes: {exc}") from exc
+    return [line.strip() for line in output.splitlines() if line.strip()]
+
+
+def ensure_exe_not_running(exe, running_paths=None):
+    exe_path = Path(exe).resolve()
+    running_paths = get_running_mdpaste_paths() if running_paths is None else running_paths
+    for running_path in running_paths:
+        try:
+            candidate = Path(running_path).resolve()
+        except OSError:
+            continue
+        if os.path.normcase(str(candidate)) == os.path.normcase(str(exe_path)):
+            raise RuntimeError(
+                f"MdPaste.exe is currently running from {exe_path}. "
+                "Quit MdPaste before patching the executable."
+            )
+
+
+def create_exe_backups(exe, timestamp=None):
+    exe = Path(exe)
+    timestamp = timestamp or datetime.now().strftime("%Y%m%d-%H%M%S")
+    original_backup = exe.with_name(f"{exe.name}.before-codeblock-patch")
+    timestamped_backup = exe.with_name(f"{exe.name}.before-patch-{timestamp}")
+    suffix = 1
+    while timestamped_backup.exists():
+        timestamped_backup = exe.with_name(f"{exe.name}.before-patch-{timestamp}-{suffix}")
+        suffix += 1
+
+    created = []
+    if not original_backup.exists():
+        shutil.copy2(exe, original_backup)
+        created.append(original_backup)
+    shutil.copy2(exe, timestamped_backup)
+    created.append(timestamped_backup)
+    return created
+
+
 def extract_pyz_entry(data, entry):
     typecode, offset, length = entry
     raw = data[offset : offset + length]
@@ -256,7 +435,10 @@ def write_pyz(path, py_magic, original_data, toc, patched_code):
     output[0:4] = PYZ_MAGIC
     output[4:8] = py_magic
     output[8:12] = struct.pack("!i", toc_offset)
-    path.write_bytes(output)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = path.with_name(f"{path.name}.tmp")
+    tmp_path.write_bytes(output)
+    tmp_path.replace(path)
 
 
 def find_carchive_cookie(data):
@@ -364,7 +546,6 @@ def write_carchive(path, entries, pylib_name):
 def main():
     root = Path(__file__).resolve().parents[1]
     exe = root / "MdPaste.exe"
-    backup = root / "MdPaste.exe.before-codeblock-patch"
     work = root / "exe-extract-tmp"
     pyz_path = work / "PYZ.pyz"
     patched_pyz = work / "PYZ.patched.pyz"
@@ -372,8 +553,9 @@ def main():
     if not exe.exists():
         raise RuntimeError(f"Missing exe: {exe}")
 
-    if not backup.exists():
-        shutil.copy2(exe, backup)
+    ensure_exe_not_running(exe)
+
+    backups = create_exe_backups(exe)
 
     work.mkdir(parents=True, exist_ok=True)
     exe_data = exe.read_bytes()
@@ -385,6 +567,7 @@ def main():
     pyz_path.write_bytes(extract_carchive_entry(exe_data, start, pyz_entry))
 
     original_pyz, py_magic, pyz_toc = read_pyz(pyz_path)
+    ensure_runtime_magic_matches_pyz(py_magic)
     toc_dict = dict(pyz_toc)
     latex_code = marshal.loads(extract_pyz_entry(original_pyz, toc_dict["pastemd.utils.latex"]))
     latex_code, regex_changed = replace_const(
@@ -415,15 +598,21 @@ def main():
     if not preference_changed:
         raise RuntimeError("Did not find should_prefer_clipboard_text code object")
 
+    patched_entries = {
+        "pastemd.utils.latex": latex_code,
+        "pastemd.utils.html_analyzer": html_analyzer_code,
+    }
+    app_code = marshal.loads(extract_pyz_entry(original_pyz, toc_dict["pastemd"]))
+    app_code, version_changed = replace_const(app_code, APP_VERSION_OLD, APP_VERSION_NEW)
+    if version_changed:
+        patched_entries["pastemd"] = app_code
+
     write_pyz(
         patched_pyz,
         py_magic,
         original_pyz,
         pyz_toc,
-        {
-            "pastemd.utils.latex": latex_code,
-            "pastemd.utils.html_analyzer": html_analyzer_code,
-        },
+        patched_entries,
     )
 
     prefix = exe_data[:start]
@@ -454,7 +643,8 @@ def main():
         exe.write_bytes(prefix + archive_path.read_bytes())
 
     print(f"patched {exe}")
-    print(f"backup  {backup}")
+    for backup in backups:
+        print(f"backup  {backup}")
 
 
 if __name__ == "__main__":

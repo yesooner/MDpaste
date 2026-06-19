@@ -2,6 +2,7 @@
 cache/
 portable-data/
 release-restore/
+release-restore-*/
 rollback-backup-generated-runtime/
 exe-extract-tmp/
 exe-verify-tmp/

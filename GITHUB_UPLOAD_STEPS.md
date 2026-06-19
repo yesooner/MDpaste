@@ -1,4 +1,4 @@
-# GitHub Upload Steps
+﻿# GitHub Upload Steps
 
 ## 1. Create the GitHub repository
 
@@ -17,16 +17,34 @@ git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
 
-Then commit:
+Then commit the maintained source, launcher, packaging, and documentation files:
 
 ```powershell
-git add .gitattributes .gitignore LICENSE NOTICE.md SOURCE.md MDPASTE.cmd MdPaste-portable.cmd portable-config.ps1 switch-startup.cmd README.md README.txt RELEASE_NOTES.md build-release.ps1 GITHUB_UPLOAD_STEPS.md
-git commit -m "Prepare PasteMD portable release"
+git add .gitattributes .gitignore LICENSE NOTICE.md SOURCE.md MDPASTE.cmd MdPaste-portable.cmd portable-config.ps1 switch-startup.cmd README.md i18n RELEASE_NOTES.md MODIFICATIONS.md UPSTREAM_COMPARISON.md build-release.ps1 GITHUB_UPLOAD_STEPS.md tools tests
+git commit -m "fix: 更新便携启动和复制清理"
 ```
 
-## 3. Push to GitHub
+Do not commit `_internal`, `MdPaste.exe`, `portable-data`, `cache`, generated backups, or `dist`; they are intentionally ignored.
 
-Replace `<your-user>` and `<repo>` with your actual GitHub owner and repository name:
+## 3. Build the release ZIP
+
+Build the native no-console launcher first if needed:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\build_portable_launcher.ps1
+```
+
+Then build the portable ZIP:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build-release.ps1
+```
+
+The ZIP should include `MdPaste-portable-launcher.exe`; users should start from that file.
+
+## 4. Push to GitHub
+
+Replace `<your-user>` and `<repo>` with the actual GitHub owner and repository name:
 
 ```powershell
 git branch -M main
@@ -34,7 +52,7 @@ git remote add origin https://github.com/<your-user>/<repo>.git
 git push -u origin main
 ```
 
-## 4. Upload release assets
+## 5. Upload release assets
 
 Open the repository on GitHub and create a new Release:
 
@@ -42,17 +60,15 @@ Open the repository on GitHub and create a new Release:
 - Title: `MDPASTE Portable v0.1.1`
 - Description: copy the content from `RELEASE_NOTES.md`
 
-Upload these files as release assets:
+Upload this file as the release asset:
 
 - `dist\MDPASTE-portable-v0.1.1.zip`
 
-Do not commit `_internal`, `MdPaste.exe`, `portable-data`, `cache`, or `dist` into the Git repository. They are ignored intentionally.
-
-## 5. Test from GitHub
+## 6. Test from GitHub
 
 After the Release is published:
 
 1. Download `MDPASTE-portable-v0.1.1.zip` from the Release page on another Windows computer.
 2. Extract it.
-3. Double-click `MDPASTE.cmd`.
+3. Double-click `MdPaste-portable-launcher.exe`.
 4. Confirm that `portable-data\Roaming\PasteMD\config.json` is created and points to the extracted folder.

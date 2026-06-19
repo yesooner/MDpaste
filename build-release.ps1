@@ -1,5 +1,5 @@
-param(
-  [string]$Version = "0.1.2"
+﻿param(
+  [string]$Version = "0.1.8"
 )
 
 $ErrorActionPreference = "Stop"
@@ -15,8 +15,37 @@ if (Test-Path -LiteralPath $staging) {
 
 New-Item -ItemType Directory -Force -Path $staging, $dist | Out-Null
 
+function Copy-ReleaseItem {
+  param(
+    [Parameter(Mandatory = $true)][string]$Source,
+    [Parameter(Mandatory = $true)][string]$Target
+  )
+
+  $sourceItem = Get-Item -LiteralPath $Source
+  if (-not $sourceItem.PSIsContainer) {
+    Copy-Item -LiteralPath $Source -Destination $Target
+    return
+  }
+
+  New-Item -ItemType Directory -Force -Path $Target | Out-Null
+  Get-ChildItem -LiteralPath $Source -Recurse -Force | Where-Object {
+    $_.Name -ne "__pycache__" -and $_.Name -notlike "*.pyc"
+  } | ForEach-Object {
+    $relative = $_.FullName.Substring($sourceItem.FullName.Length).TrimStart("\", "/")
+    $destination = Join-Path $Target $relative
+    if ($_.PSIsContainer) {
+      New-Item -ItemType Directory -Force -Path $destination | Out-Null
+    } else {
+      $parent = Split-Path -Parent $destination
+      New-Item -ItemType Directory -Force -Path $parent | Out-Null
+      Copy-Item -LiteralPath $_.FullName -Destination $destination
+    }
+  }
+}
+
 $include = @(
   "MdPaste.exe",
+  "MdPaste-portable-launcher.exe",
   "_internal",
   "assets",
   "pastemd",
@@ -45,11 +74,7 @@ foreach ($item in $include) {
   }
 
   $target = Join-Path $staging $item
-  if ((Get-Item -LiteralPath $source).PSIsContainer) {
-    Copy-Item -LiteralPath $source -Destination $target -Recurse
-  } else {
-    Copy-Item -LiteralPath $source -Destination $target
-  }
+  Copy-ReleaseItem -Source $source -Target $target
 }
 
 New-Item -ItemType Directory -Force -Path (Join-Path $staging "cache") | Out-Null

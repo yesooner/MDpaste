@@ -1,4 +1,4 @@
-# MDPASTE Portable
+﻿# MDPASTE Portable
 
 > 让 Markdown 从 AI 对话顺畅进入 Word / WPS / Office<br>
 > 基于上游 PasteMD 的 Windows 便携封装，内置 Pandoc，可在新电脑上解压即用。
@@ -24,30 +24,31 @@ MDPASTE Portable 是一个面向 Windows 的 PasteMD 便携发行包。它用于
 ## 快速开始
 
 1. 打开 GitHub Releases 页面。
-2. 下载 `MDPASTE-portable-v0.1.2.zip`。
+2. 下载 `MDPASTE-portable-v0.1.8.zip`。
 3. 解压到任意文件夹。
-4. 双击 `MDPASTE.cmd` 启动。
+4. 双击 `MdPaste-portable-launcher.exe` 启动。
 5. 复制 Markdown 内容后，按默认快捷键 `Ctrl+Alt+B` 进行转换/粘贴。
 
-不要直接双击 `MdPaste.exe`。请使用 `MDPASTE.cmd`，因为它会先准备便携数据目录，并按当前电脑路径自动写入配置。
+不要直接双击 `MdPaste.exe`。请使用 `MdPaste-portable-launcher.exe`，因为它会先准备便携数据目录，并按当前电脑路径自动写入配置，且不会打开命令行窗口。`MDPASTE.cmd` 仅作为兼容备用入口保留。
 
 ## 便携机制
 
-每次从 `MDPASTE.cmd` 启动时，程序都会按当前文件夹重写配置：
+每次从 `MdPaste-portable-launcher.exe` 启动时，程序都会按当前文件夹重写配置：
 
 - `APPDATA` -> `portable-data\Roaming`
 - `LOCALAPPDATA` -> `portable-data\Local`
 - `pandoc_path` -> 当前文件夹下的 `_internal\pandoc\pandoc.exe`
 - `save_dir` -> 当前文件夹下的 `cache`
 
-因此，把整个文件夹复制到另一台 Windows 电脑后，仍然双击 `MDPASTE.cmd` 即可，不需要手动修改路径。
+因此，把整个文件夹复制到另一台 Windows 电脑后，仍然双击 `MdPaste-portable-launcher.exe` 即可，不需要手动修改路径。
 
 ## 主要文件
 
 ```text
 MDpaste/
-├── MDPASTE.cmd                 # 用户启动入口
-├── MdPaste-portable.cmd         # 便携启动脚本
+├── MdPaste-portable-launcher.exe # 无命令行窗口启动入口
+├── MDPASTE.cmd                 # 兼容备用启动入口
+├── MdPaste-portable.cmd         # 兼容便携启动脚本
 ├── portable-config.ps1          # 启动时重写本机路径
 ├── switch-startup.cmd           # 开机自启管理
 ├── build-release.ps1            # 生成 Release ZIP
@@ -100,6 +101,7 @@ _internal\pandoc\pandoc.exe
 
 - `MDPASTE.cmd`
 - `MdPaste-portable.cmd`
+- `MdPaste-portable-launcher.exe`
 - `portable-config.ps1`
 - `switch-startup.cmd`
 - `build-release.ps1`
@@ -107,9 +109,9 @@ _internal\pandoc\pandoc.exe
 
 如果发布的 `MdPaste.exe` 中还包含 Python 逻辑修改，则需要继续补充用于构建该二进制的对应修改源码。
 
-## v0.1.2 更新说明
+## v0.1.8 更新说明
 
-`v0.1.2` 是兼容性修复版本。建议版本号按 SemVer 风格维护：修复问题递增 patch，例如 `0.1.1`；新增功能递增 minor，例如 `0.2.0`；稳定公开接口后再使用 `1.0.0`。
+`v0.1.8` 是兼容性修复版本。建议版本号按 SemVer 风格维护：修复问题递增 patch，例如 `0.1.1`；新增功能递增 minor，例如 `0.2.0`；稳定公开接口后再使用 `1.0.0`。
 
 本版本修复 ChatGPT 网页片段复制时，代码块被当作普通文本导致 Markdown fence 丢失的问题；同时代码块和行内代码内部不再被 LaTeX/公式规则误转换，正文公式转换保持开启。
 
@@ -121,7 +123,7 @@ _internal\pandoc\pandoc.exe
 - `RELEASE_NOTES.md` 中的版本号和附件名。
 - `SOURCE.md` 中对应的上游 tag、commit 和源码链接。
 - `build-release.ps1` 中的默认 `$Version`。
-- Git tag，例如 `v0.1.2`。
+- Git tag，例如 `v0.1.8`。
 - GitHub Release 标题、说明和附件 ZIP 名称。
 
 版本号不一致会导致用户下载说明、Release 附件和源码说明互相对不上，所以每次发布新版本都应统一检查。
@@ -137,7 +139,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\build-release.ps1
 输出文件：
 
 ```text
-dist\MDPASTE-portable-v0.1.2.zip
+dist\MDPASTE-portable-v0.1.8.zip
 ```
 
 本地生成 Windows 安装程序需要先安装 Inno Setup：
@@ -150,7 +152,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\build-installer.ps1
 输出文件：
 
 ```text
-dist\MDPASTE-Setup-v0.1.2.exe
+dist\MDPASTE-Setup-v0.1.8.exe
 ```
 
 完整可运行包通过 GitHub Release 附件发布。Git 仓库只保存启动脚本、打包脚本、说明文档、许可证、源码说明和已识别的修改资源。
@@ -165,6 +167,6 @@ dist\MDPASTE-Setup-v0.1.2.exe
 
 上游项目：<https://github.com/RICHQAQ/PasteMD>
 
-本便携封装发行版本为 `v0.1.2`。它重新分发的上游 PasteMD 对应版本为 `v0.1.6.8`：<https://github.com/RICHQAQ/PasteMD/tree/v0.1.6.8>
+本便携封装发行版本为 `v0.1.8`。它重新分发的上游 PasteMD 对应版本为 `v0.1.6.8`：<https://github.com/RICHQAQ/PasteMD/tree/v0.1.6.8>
 
 PasteMD 采用 AGPL-3.0 许可。本仓库是对 PasteMD Windows 便携包的再分发/封装，仓库内启动脚本和打包文件也按 AGPL-3.0 发布。发布时请保留 `LICENSE`、`NOTICE.md` 和 `SOURCE.md`。

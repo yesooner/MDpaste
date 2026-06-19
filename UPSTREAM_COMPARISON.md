@@ -1,11 +1,11 @@
-# Upstream Comparison
+﻿# Upstream Comparison
 
 Comparison target:
 
 - Upstream repository: https://github.com/RICHQAQ/PasteMD
 - Upstream tag: `v0.1.6.8`
 - Upstream commit: `84b2cea1f291d910d4cf2d0a1fbc829f6bfec524`
-- Local portable release: `v0.1.2`
+- Local portable release: `v0.1.8`
 
 The local package was compared against the upstream source ZIP for `v0.1.6.8`.
 
@@ -39,14 +39,17 @@ These files are not upstream PasteMD files. They were added for the portable Win
 
 | Path | Purpose |
 | --- | --- |
-| `MDPASTE.cmd` | user-facing launcher |
-| `MdPaste-portable.cmd` | portable startup script |
+| `MdPaste-portable-launcher.exe` | user-facing no-console launcher |
+| `MDPASTE.cmd` | compatibility fallback launcher |
+| `MdPaste-portable.cmd` | compatibility portable startup script |
 | `portable-config.ps1` | rewrites portable paths on startup |
 | `switch-startup.cmd` | Windows login startup helper |
 | `build-release.ps1` | builds the Release ZIP |
 | `build-installer.ps1` | builds the optional Inno Setup installer |
 | `installer.iss` | Inno Setup project file |
-| `tools/patch_release_exe.py` | applies the v0.1.2 executable compatibility patch |
+| `tools/patch_release_exe.py` | applies the v0.1.8 executable compatibility patch |
+| `tools/MdPastePortableLauncher.cs` | native no-console portable launcher source |
+| `tools/build_portable_launcher.ps1` | builds the native portable launcher |
 | `README.md` | user and maintenance documentation |
 | `README.txt` | short user instructions included in ZIP |
 | `RELEASE_NOTES.md` | GitHub Release notes |
@@ -57,4 +60,4 @@ These files are not upstream PasteMD files. They were added for the portable Win
 
 ## Limitations
 
-The local portable package does not contain full readable Python source files outside `MdPaste.exe`. The v0.1.2 executable compatibility patch is documented and reproduced by `tools/patch_release_exe.py`.
+The local portable package does not contain full readable Python source files outside `MdPaste.exe`. The v0.1.8 executable compatibility patch is documented and reproduced by `tools/patch_release_exe.py`.

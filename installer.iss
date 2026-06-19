@@ -1,6 +1,6 @@
-#define AppName "MDPASTE"
+﻿#define AppName "MDPASTE"
 #ifndef AppVersion
-#define AppVersion "0.1.2"
+#define AppVersion "0.1.8"
 #endif
 #define AppPublisher "yesooner"
 #define AppExeName "MdPaste.exe"

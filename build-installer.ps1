@@ -1,5 +1,5 @@
-param(
-  [string]$Version = "0.1.2",
+﻿param(
+  [string]$Version = "0.1.8",
   [string]$InnoSetupCompiler = ""
 )
 

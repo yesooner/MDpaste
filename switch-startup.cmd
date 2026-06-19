@@ -44,7 +44,7 @@ if !TaskExists!==0 (
 ) else (
     echo 启用开机自启...
 )
-schtasks /create /tn "PasteMD-Portable" /tr "\"%MDPASTE_HOME%\MdPaste-portable.cmd\"" /sc onlogon /rl limited /f 2>nul
+schtasks /create /tn "PasteMD-Portable" /tr "\"%MDPASTE_HOME%\MdPaste-portable-launcher.exe\"" /sc onlogon /rl limited /f 2>nul
 if errorlevel 1 (
     echo [失败] 请以管理员身份运行此脚本
     pause
