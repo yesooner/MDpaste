@@ -4,8 +4,8 @@
 > A Windows portable package based on upstream PasteMD, bundled with Pandoc and ready to run after extraction.
 
 <p align="center">
-  <a href="../README.md"><img alt="中文" src="https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-%E4%B8%AD%E6%96%87-blue"></a>
-  <a href="./README.en.md"><img alt="English" src="https://img.shields.io/badge/Language-English-lightgrey"></a>
+  <a href="./README.zh-CN.md"><img alt="中文" src="https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-%E4%B8%AD%E6%96%87-lightgrey"></a>
+  <a href="../README.md"><img alt="English" src="https://img.shields.io/badge/Language-English-blue"></a>
   <a href="../LICENSE"><img alt="License" src="https://img.shields.io/badge/License-AGPL--3.0-orange"></a>
 </p>
 
@@ -51,7 +51,7 @@ MDpaste/
 ├── portable-config.ps1          # rewrites local paths on startup
 ├── switch-startup.cmd           # login startup helper
 ├── build-release.ps1            # builds the Release ZIP
-├── README.md                    # Chinese README
+├── README.md                    # English README
 ├── i18n/
 │   └── README.en.md             # English README
 ├── MODIFICATIONS.md             # modifications from upstream
