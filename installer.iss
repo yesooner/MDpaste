@@ -34,8 +34,9 @@ Source: "_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recurses
 Source: "assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "pastemd\*"; DestDir: "{app}\pastemd"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "i18n\*"; DestDir: "{app}\i18n"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "tools\*"; DestDir: "{app}\tools"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "tools\*"; DestDir: "{app}\tools"; Excludes: "__pycache__\*,*.pyc"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "MDPASTE.cmd"; DestDir: "{app}"; Flags: ignoreversion
+Source: "MdPaste-portable-launcher.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "MdPaste-portable.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "portable-config.ps1"; DestDir: "{app}"; Flags: ignoreversion
 Source: "switch-startup.cmd"; DestDir: "{app}"; Flags: ignoreversion
@@ -53,14 +54,14 @@ Name: "{app}\portable-data\Roaming"
 Name: "{app}\portable-data\Local"
 
 [Icons]
-Name: "{group}\{#AppName}"; Filename: "{app}\MDPASTE.cmd"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\logo.ico"
+Name: "{group}\{#AppName}"; Filename: "{app}\MdPaste-portable-launcher.exe"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\logo.ico"
 Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
-Name: "{autodesktop}\{#AppName}"; Filename: "{app}\MDPASTE.cmd"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\logo.ico"; Tasks: desktopicon
-Name: "{userstartup}\{#AppName}"; Filename: "{app}\MDPASTE.cmd"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\logo.ico"; Tasks: startup
+Name: "{autodesktop}\{#AppName}"; Filename: "{app}\MdPaste-portable-launcher.exe"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\logo.ico"; Tasks: desktopicon
+Name: "{userstartup}\{#AppName}"; Filename: "{app}\MdPaste-portable-launcher.exe"; WorkingDir: "{app}"; IconFilename: "{app}\assets\icons\logo.ico"; Tasks: startup
 
 [Run]
 Filename: "powershell.exe"; Parameters: "-NoProfile -ExecutionPolicy Bypass -File ""{app}\portable-config.ps1"" -HomeDir ""{app}"""; Flags: runhidden waituntilterminated
-Filename: "{app}\MDPASTE.cmd"; Description: "Launch {#AppName}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\MdPaste-portable-launcher.exe"; Description: "Launch {#AppName}"; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
 Filename: "taskkill.exe"; Parameters: "/F /IM MdPaste.exe"; Flags: runhidden; RunOnceId: "StopMdPaste"

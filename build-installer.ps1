@@ -16,6 +16,7 @@ $required = @(
   "MdPaste.exe",
   "_internal\pandoc\pandoc.exe",
   "MDPASTE.cmd",
+  "MdPaste-portable-launcher.exe",
   "MdPaste-portable.cmd",
   "portable-config.ps1",
   "assets\icons\logo.ico"

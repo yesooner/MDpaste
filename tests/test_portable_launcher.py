@@ -55,6 +55,16 @@ class PortableLauncherTests(unittest.TestCase):
         self.assertIn("portable-data/", gitignore)
         self.assertIn("_internal/", gitignore)
 
+    def test_installer_uses_native_launcher_without_cmd_host(self):
+        build_script = (ROOT / "build-installer.ps1").read_text(encoding="utf-8")
+        installer = (ROOT / "installer.iss").read_text(encoding="utf-8")
+
+        self.assertIn('"MdPaste-portable-launcher.exe"', build_script)
+        self.assertIn('Source: "MdPaste-portable-launcher.exe"', installer)
+        self.assertIn('Filename: "{app}\\MdPaste-portable-launcher.exe"', installer)
+        self.assertIn('Excludes: "__pycache__\\*,*.pyc"', installer)
+        self.assertNotIn('Filename: "{app}\\MDPASTE.cmd"', installer)
+
     def test_native_launcher_checks_running_app_without_external_query_processes(self):
         source = (ROOT / "tools" / "MdPastePortableLauncher.cs").read_text(encoding="utf-8").lower()
 
