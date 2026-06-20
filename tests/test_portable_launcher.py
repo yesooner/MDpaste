@@ -103,6 +103,27 @@ class PortableLauncherTests(unittest.TestCase):
         self.assertNotIn("\n - `tools/MdPastePortableLauncher.cs`", modifications)
         self.assertNotIn("\n - `tools/build_portable_launcher.ps1`", modifications)
 
+    def test_release_metadata_uses_current_patch_version(self):
+        docs = "\n".join(
+            [
+                (ROOT / "README.md").read_text(encoding="utf-8"),
+                (ROOT / "i18n" / "README.en.md").read_text(encoding="utf-8"),
+                (ROOT / "RELEASE_NOTES.md").read_text(encoding="utf-8"),
+                (ROOT / "MODIFICATIONS.md").read_text(encoding="utf-8"),
+                (ROOT / "UPSTREAM_COMPARISON.md").read_text(encoding="utf-8"),
+                (ROOT / "SOURCE.md").read_text(encoding="utf-8"),
+                (ROOT / "GITHUB_UPLOAD_STEPS.md").read_text(encoding="utf-8"),
+                (ROOT / "build-release.ps1").read_text(encoding="utf-8"),
+            ]
+        )
+
+        self.assertIn("MDPASTE-portable-v0.1.8.zip", docs)
+        self.assertIn("MDPASTE Portable v0.1.8", docs)
+        self.assertIn('[string]$Version = "0.1.8"', docs)
+        self.assertNotIn("MDPASTE-portable-v0.1.2.zip", docs)
+        self.assertNotIn("Portable release version: `v0.1.2`", docs)
+        self.assertNotIn("MDPASTE-portable-v0.1.7.2.zip", docs)
+
     def test_native_launcher_exits_before_touching_config_when_app_is_running(self):
         source = (ROOT / "tools" / "MdPastePortableLauncher.cs").read_text(encoding="utf-8")
 
